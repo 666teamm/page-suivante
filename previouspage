@@ -1,0 +1,163 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("SP1RIT SOFTAIM", "Synapse")
+
+--AIMBOT
+local AIMBOTTab = Window:NewTab("AIMBOT")
+local AIMBOTSection = AIMBOTTab:NewSection("Cheat")
+
+AIMBOTSection:NewButton("Aimbot", "ButtonInfo", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Aimbot-V2/main/Resources/Scripts/Main.lua"))()
+end)
+
+AIMBOTSection:NewButton("SP1RIT Silent Aim", "ButtonInfo", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/sp1ritleaker/silent-aim/main/silent%20aim"))()
+end)
+
+--esp
+local VisualTab = Window:NewTab("ESP")
+local VisualSection = VisualTab:NewSection("ESP")
+
+VisualSection:NewButton("NAMEESP", "ButtonInfo", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/ESP-Script/main/ESP.lua"))()
+end)
+
+VisualSection:NewButton("BOXE ESP", "ButtonInfo", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Boxes-Script/main/Boxes%20Script.lua"))()
+end)
+
+--Other
+local OtherTab = Window:NewTab("Other")
+local OtherSection = OtherTab:NewSection("Credit")
+
+OtherSection:NewLabel("Join discord.gg/0x504")
+
+local OtherSection = OtherTab:NewSection("Infinit Jump")
+
+OtherSection:NewButton("Infnt Jump", "ButtonInfo", function()
+    local infjmp = true
+game:GetService("UserInputService").jumpRequest:Connect(function()
+    if infjmp then
+        game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass"Humanoid":ChangeState("Jumping")
+    end
+end)
+end)
+
+--Blade ball
+local BladeTab = Window:NewTab("Blade ball")
+local BladeSection = BladeTab:NewSection("Blade Ball")
+
+BladeSection:NewToggle("Auto Parry", "Auto Parry the ball if it's close & is targeting you.", function(state)
+    local runService = game:GetService("RunService")
+    local players = game:GetService("Players")
+    local workspace = game:GetService("Workspace")
+    local vim = game:GetService("VirtualInputManager")
+    local ballFolder = workspace.Balls
+
+    local indicatorPart = Instance.new("Part")
+    indicatorPart.Size = Vector3.new(5, 5, 5)
+    indicatorPart.Anchored = true
+    indicatorPart.CanCollide = false
+    indicatorPart.Transparency = 1
+    indicatorPart.BrickColor = BrickColor.new("Bright red")
+    indicatorPart.Parent = workspace
+
+    local lastBallPressed, isKeyPressed = nil, false
+
+    local function calculatePredictionTime(ball, player)
+        local rootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+        if rootPart then
+            local relativePosition = ball.Position - rootPart.Position
+            local velocity = ball.Velocity + rootPart.Velocity 
+            local a = ball.Size.magnitude / 2
+            local b = relativePosition.magnitude
+            local c = math.sqrt(a * a + b * b)
+            return (c - a) / velocity.magnitude
+        end
+        return math.huge
+    end
+
+    local function checkProximityToPlayer(ball, player)
+        local predictionTime = calculatePredictionTime(ball, player)
+        local realBallAttribute = ball:GetAttribute("realBall")
+        local target = ball:GetAttribute("target")
+
+        local ballSpeedThreshold = math.max(0.4, 0.6 - ball.Velocity.magnitude * 0.01)
+        if predictionTime <= ballSpeedThreshold and realBallAttribute and target == player.Name and not isKeyPressed then
+            vim:SendKeyEvent(true, Enum.KeyCode.F, false, nil)
+            wait(0.005)
+            vim:SendKeyEvent(false, Enum.KeyCode.F, false, nil)
+            lastBallPressed = ball
+            isKeyPressed = true
+        elseif lastBallPressed == ball and (predictionTime > ballSpeedThreshold or not realBallAttribute or target ~= player.Name) then
+            isKeyPressed = false
+        end
+    end
+
+    local function checkBallsProximity()
+        local player = players.LocalPlayer
+        if player then
+            for _, ball in pairs(ballFolder:GetChildren()) do
+                checkProximityToPlayer(ball, player)
+            end
+        end
+    end
+
+    if state then
+        runService.Heartbeat:Connect(checkBallsProximity)
+    else
+        lastBallPressed = nil
+        isKeyPressed = false
+    end
+end)
+
+-- Auto Clicker
+local AutoClickerTab = Window:NewTab("Auto Clicker")
+local AutoClickerSection = AutoClickerTab:NewSection("Auto Clicker")
+
+AutoClickerSection:NewButton("Auto Clicker", "AutoClicker", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/jMcVd5cv"))()
+end)
+
+--Speed Hack
+local SpeedTab = Window:NewTab("SPEED HACK")
+local SpeedSection = SpeedTab:NewSection("SPEED HACK")
+
+SpeedSection:NewToggle("Super-Humain", "Go fast and jump high", function(state)
+    if state then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 200
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 120
+    else
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    end
+end)
+
+local InfinitYieldTab = Window:NewTab("Infinit Yield")
+local InfinitYieldSection = InfinitYieldTab:NewSection("Infinit Yield")
+
+InfinitYieldSection:NewButton("Infinit Yield", "ButtonInfo", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+local DoorsTab = Window:NewTab("DOORS")
+local DoorsSection = DoorsTab:NewSection("Just DOORS")
+
+DoorsSection:NewButton("DOORS", "hack doors", function()
+    loadstring(game:HttpGetAsync("https://pastebin.com/raw/R8QMbhzv"))()()
+end)
+
+local PleaseTab = Window:NewTab("Please donate")
+local PleaseSection = PleaseTab:NewSection("Please donate")
+
+PleaseSection:NewButton("Please donate 🤫", "CHUTE 🤫", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/CF-Trail/tzechco-PlsDonateAutofarmBackup/main/old.lua'))()
+end)
+
+local DahoodTab = Window:NewTab("Dahood + page suivante")
+local DahoodSection = DahoodTab:NewSection("DAHOOD")
+
+DahoodSection:NewButton("dahood", "ButtonInfo", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/mp-8/vazz/main/vvvv",true))()
+end)
+
+local pagesuivanteSection = DahoodTab:NewSection("Page suivante")
